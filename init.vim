@@ -51,9 +51,6 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-" coc prettier on save
-command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
-
 " Markdown quote syntax
 let g:markdown_quote_syntax_filetypes = {
   \ "javascript" : {
