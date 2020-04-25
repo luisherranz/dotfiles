@@ -1,0 +1,23 @@
+{
+  "name": "luisherranz-dotfiles",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "copy": "node copy-files.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luisherranz/dotfiles.git"
+  },
+  "keywords": [],
+  "author": "luisherranz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luisherranz/dotfiles/issues"
+  },
+  "homepage": "https://github.com/luisherranz/dotfiles#readme",
+  "dependencies": {
+    "copyfiles": "^2.2.0"
+  }
+}
