@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/luisherranz/dotfiles#readme",
   "dependencies": {
-    "copyfiles": "^2.2.0"
+    "copyfiles": "^2.2.0",
+    "filecopy": "^4.1.0"
   }
 }
