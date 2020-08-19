@@ -4,7 +4,7 @@
   "private": true,
   "description": "",
   "scripts": {
-    "copy": "node copy-files.js"
+    "nvim": "npx copyfiles -u 5 ~/.config/nvim/init.vim nvim"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/luisherranz/dotfiles#readme",
   "dependencies": {
-    "copyfiles": "^2.2.0",
-    "filecopy": "^4.1.0"
+    "copyfiles": "^2.3.0"
   }
 }
