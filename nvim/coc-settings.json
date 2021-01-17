@@ -5,6 +5,17 @@
     "javascriptreact",
     "typescriptreact",
     "markdown",
-    "json"
-  ]
+    "json",
+    "html"
+  ],
+  "snippets.extends": {
+    "javascriptreact": ["javascript"],
+    "typescriptreact": ["javascript"],
+    "typescript": ["javascript"]
+  },
+  "snippets.textmateSnippetsRoots": [
+    "~/Library/Application Support/Code/User/snippets"
+  ],
+  "snippets.triggerCharacters": ["ññ"],
+  "snippets.autoTrigger": false
 }
