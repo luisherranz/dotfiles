@@ -60,6 +60,9 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 inoremap <silent><expr> <c-space> coc#refresh()
 
+" Prettier command
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
 " coc snippets - Use <C-j> for select text for visual placeholder of snippet.
 vmap <C-j> <Plug>(coc-snippets-select)
 
@@ -148,16 +151,18 @@ if exists('g:started_by_firenvim')
 	\ }
 endif
 
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
 " GhostText 
 if has("gui_vimr")
   let g:ghost_darwin_app = "VimR"
   let g:ghost_autostart = 1
   let g:ghost_cmd = 'tabedit'
 
-  function! s:SetupSlack()
-    if match(expand("%:a"), '\v/slack\.com-')
+  " Format document.
+  nmap ﬁ :Prettier<CR>
+  imap ﬁ <C-o>:Prettier<CR>
+
+  function! s:SetupGhost()
+    if match(expand("%:t"), 'slack\.com-') != -1
         :%s/\%^<p><br><\/p>//ge
         :%s/<br><\/p>//ge
         :%s/<\/p>//ge
@@ -166,22 +171,17 @@ if has("gui_vimr")
         :%s/<\/\?ts-mention.\{-}>//ge
         :%s/<img.*data-id="\(:\w*:\)".*>/\1/ge
     endif
+
+    if match(expand("%:t"), 'frontapp\.com-') != -1
+        nmap <D-S-k> "+yie:bd!<CR>
+    else
+        nmap <D-S-k> :bd!<CR>
+    endif
   endfunction
 
   augroup vim-ghost
     au!
     autocmd BufNewFile,BufRead *.txt set filetype=markdown
-    au User vim-ghost#connected call s:SetupSlack()
+    au User vim-ghost#connected call s:SetupGhost()
   augroup END
-
-  " Close the buffer.
-  nmap <D-S-k> :bd!<CR>
-  vmap <D-S-k> :bd!<CR>
-  imap <D-S-k> <C-o>:bd!<CR>
-
-  " Format document.
-  nmap ﬁ :Prettier<CR>
-  imap ﬁ <C-o>:Prettier<CR>
 endif
-
-
