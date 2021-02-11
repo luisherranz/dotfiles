@@ -14,65 +14,74 @@ Plug 'tpope/vim-commentary'
 Plug 'raghur/vim-ghost', {'do': ':GhostInstall'}
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-entire'
+Plug 'easymotion/vim-easymotion'
 call plug#end()
 
-" Lang
+" Set UTF8.
 let $LANG='en_US.UTF-8'
 
-" True colors
+" Use true colors.
 if (has("termguicolors"))
   set termguicolors
 endif
 
-" Theme
+" Default filetype to markdown.
+autocmd BufEnter * if &filetype == "" | setlocal ft=markdown | endif
+
+" Theme.
 colorscheme one
 set background=light
 
-" Don't use numbers
+" Don't use numbers.
 set nonumber norelativenumber
 
-" Use jk 
+" Use jk to exit insert mode.
 imap jk <Esc>
 
-" Set leader to Space
-let mapleader = "\<Space>"
-nnoremap <SPACE> <Nop>
+" Set leader to ñ.
+let mapleader = "ñ"
 
-" On pressing tab, insert 2 spaces
+" On pressing tab, insert 2 spaces.
 set expandtab
-" show existing tab with 2 spaces width
+" Show existing tab with 2 spaces width.
 set tabstop=2
 set softtabstop=2
-" when indenting with '>', use 2 spaces width
+" When indenting with '>', use 2 spaces width.
 set shiftwidth=2
 
-" Sneak
+" Sneak options.
 let g:sneak#use_ic_scs = 1
 let g:sneak#label = 1
 set ignorecase
 set smartcase
 
-" coc completion
+" Easymotion options.
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_keys='hklyuiopnmqwertzxcvbasdgjf'
+let g:EasyMotion_use_upper = 1
+nmap s <Plug>(easymotion-s)
+map <SPACE> <Plug>(easymotion-prefix)
+
+" Coc completion options.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Prettier command
+" Prettier command.
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
-" coc snippets - Use <C-j> for select text for visual placeholder of snippet.
+" Coc snippets. Use <C-j> for select text for visual placeholder of snippet.
 vmap <C-j> <Plug>(coc-snippets-select)
 
-" Markdown quote syntax
+" Markdown quote syntax.
 let g:markdown_quote_syntax_filetypes = {
   \ "javascript" : {
-  \   "start" : "\\%(javascript\\|js\\)",
+  \   "start" : "\\%(javascript\\|js|jsx\\)",
   \},
   \ "typescript" : {
-  \   "start" : "\\%(typescript\\|ts\\)",
+  \   "start" : "\\%(typescript\\|ts|tsx\\)",
   \},
   \ "html" : {
   \   "start" : "html",
@@ -82,13 +91,13 @@ let g:markdown_quote_syntax_filetypes = {
   \},
 \}
 
-" Fix markdown comments
+" Fix markdown comments.
 autocmd FileType markdown setlocal commentstring=<!--\ %s\ -->
 
-" Use o to do bold in markdown with vim-surround
+" Use o to do bold in markdown with vim-surround.
 let g:surround_{char2nr('o')} = "**\r**"
 
-" Configure lightline
+" Configure lightline.
 let g:lightline = {
     \ 'colorscheme': 'wombat',
     \ 'active': {
@@ -100,58 +109,7 @@ let g:lightline = {
     \ },
     \ }
 
-" Firenvim config
-if exists('g:started_by_firenvim')
-  au BufEnter github.com_*.txt set filetype=markdown
-  au BufEnter mail.google.com_*.txt set filetype=markdown
-  au BufEnter community.frontity.org_*.txt set filetype=markdown
-  au BufEnter app.frontapp.com*.txt set filetype=markdown
-  au BufEnter app.slack.com*.txt set filetype=markdown
-  au BufEnter wordpressvip.zendesk.com*.txt set filetype=markdown
-
-	set guifont=Monaco:h20
-
-  " Fix double line breaks in Front and Slack
-  autocmd BufEnter app.frontapp.com_* :%s/\n\n\n/\r\r/g
-  autocmd BufEnter app.slack.com_* %s/\n\n\n\n/\r/g | %s/\n-/-/g | %s/\n```/```/g
-
-  autocmd BufEnter app.slack.com_* :cnoreabbrev wq %s/\n\n/\r/ge<bar>w<bar>q
-  autocmd BufEnter app.slack.com_* :cnoreabbrev q %s/\n\n/\r/ge<bar>w<bar>q
-  autocmd BufEnter app.slack.com_* :cnoreabbrev ZZ :g/^\s*$/d<bar>ZZ<bar>
-
-  " Paste
-  inoremap <D-v> <C-r>+
-  nnoremap <D-v> "+p
-  vnoremap <D-v> "+p
-
-  " Copy
-  vnoremap <D-c> "+y
-
-  " Save
-  inoremap <D-s> <C-o>:w<CR>
-  nnoremap <D-s> :w<CR>
-  vnoremap <D-s> :w<CR>
-
-
-	let g:firenvim_config = { 
-    \ 'globalSettings': {
-      \ 'ignoreKeys': {
-        \ 'all': ['<D-1>', '<D-2>', '<D-3>', '<D-4>', '<D-5>', '<D-6>', '<D-7>'],
-      \ }
-    \ },
-		\ 'localSettings': {
-			\ '.*': {
-				\ 'priority': 10,
-				\ 'filetype': 'markdown',
-				\ 'selector': 'textarea',
-        \ 'takeover': 'never',
-        \ 'cmdline': 'neovim',
-			\ }
-		\ }
-	\ }
-endif
-
-" GhostText 
+" GhostText config using VimR.
 if has("gui_vimr")
   let g:ghost_darwin_app = "VimR"
   let g:ghost_autostart = 1
@@ -161,22 +119,55 @@ if has("gui_vimr")
   nmap ﬁ :Prettier<CR>
   imap ﬁ <C-o>:Prettier<CR>
 
+  " Close the buffer.
+  nmap <D-S-k> :call FormatAndClose()<CR>
+  imap <D-S-k> <C-o>:call FormatAndClose()<CR>
+
+  function! FormatAndClose()
+    " Remove doble ** in Slack.
+    if match(expand("%:t"), 'slack\.com-') != -1
+      :%s/\*\*/*/ge
+      call GhostNotify('text_changed', bufnr())
+    endif
+
+    " Copy the text to the clipboard in Gmail.
+    if match(expand("%:t"), 'mail\.google\.com-') != -1
+      normal "+yae
+    endif
+
+    call GhostNotify('closed', bufnr())
+  endfunction
+
   function! s:SetupGhost()
+    " Clean Slack of HTML tags.
     if match(expand("%:t"), 'slack\.com-') != -1
         :%s/\%^<p><br><\/p>//ge
-        :%s/<br><\/p>//ge
-        :%s/<\/p>//ge
+        :%s/<br><\/p>/
+/ge
+        :%s/<\/p>/
+/ge
         :%s/<p>//ge
         :g/^\%$/d
         :%s/<\/\?ts-mention.\{-}>//ge
         :%s/<img.*data-id="\(:\w*:\)".*>/\1/ge
     endif
 
+    " Clean Front of HTML tags.
     if match(expand("%:t"), 'frontapp\.com-') != -1
-        nmap <D-S-k> "+yie:bd!<CR>
-    else
-        nmap <D-S-k> :bd!<CR>
+        :%s/\%^<div[^>]*><br><\/div>//ge
+        :%s/<br><\/div>/
+/ge
+        :%s/<\/div>/
+/ge
+        :%s/<div.\{-}>//ge
+        :g/^\%$/d
     endif
+
+    " Clean Gmail of HTML tags.
+    if match(expand("%:t"), 'mail\.google\.com-') != -1
+        :%s/\%^<br>//ge
+    endif
+
   endfunction
 
   augroup vim-ghost
